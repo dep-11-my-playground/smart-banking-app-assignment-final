@@ -81,6 +81,72 @@ public class Assignment {
                     }
                     break;
                 
+                    case OPEN_ACCOUNT:{
+                        String id = String.format("SDB-%05d", accounts.length + 1);
+                        System.out.printf("ID: %s\n", id);
+    
+                        // Name validation
+                        boolean valid;
+                        String name;
+                        double initialDeposit;
+    
+                        nameValidation:
+                        do{
+    
+                            valid = true;
+                            System.out.print("Name: ");
+                            name = SCANNER.nextLine().strip();
+    
+                            if(name.isBlank()){
+                                System.out.printf(ERROR_MSG,"Name can't be empty!" );
+                                valid = false;
+                                continue nameValidation;
+                            }
+    
+                            for (int i = 0; i < name.length(); i++) {
+                                if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))){
+                                    System.out.printf(ERROR_MSG, "Invalid Name!");
+                                    valid = false;
+                                    continue nameValidation;
+                                }
+                            }
+    
+                        }while(!valid);
+    
+                        // Initial Deposit validation
+                        initialDepositValidation:
+                        do{
+    
+                            valid = true;
+                            System.out.print("Initial Deposit: ");
+                            initialDeposit = SCANNER.nextDouble();
+                            SCANNER.nextLine();
+                            
+                            if(!(initialDeposit >= 5000)){
+                                System.out.printf(ERROR_MSG, "Insufficient amount to deposit initially!");
+                                valid = false;
+                                continue initialDepositValidation;
+                            }
+    
+                        }while(!valid);
+    
+                        String[][] newAccounts = new String[accounts.length +1][3];
+                        for (int i = 0; i < accounts.length; i++) {
+                            newAccounts[i] = accounts[i];
+                        }
+    
+                        newAccounts[newAccounts.length-1][0] = id;
+                        newAccounts[newAccounts.length-1][1] = name;
+                        newAccounts[newAccounts.length-1][2] = initialDeposit+"";
+    
+                        accounts = newAccounts;
+    
+                        System.out.printf(SUCCESS_MSG, String.format("%s:%s has created successfully \n", id, name));
+                        System.out.print("Do you want to add another account (Y/n)?");
+                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                        else screen = DASHBOARD;
+                        break;  
+                    }             
                 default:
                     System.exit(0);                   
             }
