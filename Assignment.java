@@ -81,82 +81,82 @@ public class Assignment {
                     }
                     break;
                 
-                    case OPEN_ACCOUNT:{
-                        String id = String.format("SDB-%05d", accounts.length + 1);
-                        System.out.printf("ID: %s\n", id);
+                case OPEN_ACCOUNT:{
+                    String id = String.format("SDB-%05d", accounts.length + 1);
+                    System.out.printf("ID: %s\n", id);
     
-                        // Name validation
-                        boolean valid;
-                        String name;
-                        double initialDeposit;
+                    // Name validation
+                    boolean valid;
+                    String name;
+                    double initialDeposit;
     
-                        nameValidation:
-                        do{
+                    nameValidation:
+                    do{
     
-                            valid = true;
-                            System.out.print("Name: ");
-                            name = SCANNER.nextLine().strip();
+                        valid = true;
+                        System.out.print("Name: ");
+                        name = SCANNER.nextLine().strip();
     
-                            if(name.isBlank()){
-                                System.out.printf(ERROR_MSG,"Name can't be empty!" );
+                        if(name.isBlank()){
+                            System.out.printf(ERROR_MSG,"Name can't be empty!" );
+                            valid = false;
+                            continue nameValidation;
+                        }
+    
+                        for (int i = 0; i < name.length(); i++) {
+                            if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))){
+                                System.out.printf(ERROR_MSG, "Invalid Name!");
                                 valid = false;
                                 continue nameValidation;
                             }
-    
-                            for (int i = 0; i < name.length(); i++) {
-                                if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))){
-                                    System.out.printf(ERROR_MSG, "Invalid Name!");
-                                    valid = false;
-                                    continue nameValidation;
-                                }
-                            }
-    
-                        }while(!valid);
-    
-                        // Initial Deposit validation
-                        initialDepositValidation:
-                        do{
-    
-                            valid = true;
-                            System.out.print("Initial Deposit: ");
-                            initialDeposit = SCANNER.nextDouble();
-                            SCANNER.nextLine();
-                            
-                            if(!(initialDeposit >= 5000)){
-                                System.out.printf(ERROR_MSG, "Insufficient amount to deposit initially!");
-                                valid = false;
-                                continue initialDepositValidation;
-                            }
-    
-                        }while(!valid);
-    
-                        String[][] newAccounts = new String[accounts.length +1][3];
-                        for (int i = 0; i < accounts.length; i++) {
-                            newAccounts[i] = accounts[i];
                         }
     
-                        newAccounts[newAccounts.length-1][0] = id;
-                        newAccounts[newAccounts.length-1][1] = name;
-                        newAccounts[newAccounts.length-1][2] = initialDeposit+"";
+                    }while(!valid);
     
-                        accounts = newAccounts;
+                    // Initial Deposit validation
+                    initialDepositValidation:
+                    do{
     
-                        System.out.printf(SUCCESS_MSG, String.format("%s:%s has created successfully \n", id, name));
-                        System.out.print("Do you want to add another account (Y/n)?");
-                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
-                        else screen = DASHBOARD;
-                        break;  
+                        valid = true;
+                        System.out.print("Initial Deposit: ");
+                        initialDeposit = SCANNER.nextDouble();
+                        SCANNER.nextLine();
+                            
+                        if(!(initialDeposit >= 5000)){
+                            System.out.printf(ERROR_MSG, "Insufficient amount to deposit initially!");
+                            valid = false;
+                            continue initialDepositValidation;
+                        }
+    
+                    }while(!valid);
+    
+                    String[][] newAccounts = new String[accounts.length +1][3];
+                    for (int i = 0; i < accounts.length; i++) {
+                        newAccounts[i] = accounts[i];
                     }
+    
+                    newAccounts[newAccounts.length-1][0] = id;
+                    newAccounts[newAccounts.length-1][1] = name;
+                    newAccounts[newAccounts.length-1][2] = initialDeposit+"";
+    
+                    accounts = newAccounts;
+    
+                    System.out.printf(SUCCESS_MSG, String.format("%s:%s has created successfully \n", id, name));
+                    System.out.print("Do you want to add another account (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break;  
+                }
                     
-                    case DEPOSIT:{
-                        // acoount number validation
-                        validateAccountNo("Enter Account No: ");
-                        if(!valid) continue;
+                case DEPOSIT:{
+                    // acoount number validation
+                    validateAccountNo("Enter Account No: ");
+                    if(!valid) continue;
 
-                        // Finding current balance
-                        checkCurrentBalance();
+                    // Finding current balance
+                    checkCurrentBalance();
 
-                        // Deposit amount validation
+                    // Deposit amount validation
                     Double depositAmount;
                     depositValidation:
                     do{
@@ -199,57 +199,98 @@ public class Assignment {
                     break; 
                     }
            
-                    case WITHDRAW:{
-                        // Account Validation
-                        validateAccountNo("Enter Account No:");
-                        if(!valid) continue;
+                case WITHDRAW:{
+                    // Account Validation
+                    validateAccountNo("Enter Account No:");
+                    if(!valid) continue;
 
-                        // Cheking current balance
-                        checkCurrentBalance();
+                    // Cheking current balance
+                    checkCurrentBalance();
 
-                        // Withdraw amount validation                   
-                        validateWithdrawAmount("Withdraw Amount: ");
-                        if (!valid) continue;
+                    // Withdraw amount validation                   
+                    validateWithdrawAmount("Withdraw Amount: ");
+                    if (!valid) continue;
 
-                        Double newBalance = Double.valueOf(amount) - withdrawAmount;
-                        System.out.printf("%sNew Balance:%s %,.2f\n", COLOR_GREEN, RESET, newBalance);
+                    Double newBalance = Double.valueOf(amount) - withdrawAmount;
+                    System.out.printf("%sNew Balance:%s %,.2f\n", COLOR_GREEN, RESET, newBalance);
 
-                        for (int i = 0; i < accounts.length; i++) {
-                            if(accounts[i][0].equals(accountNo)){
-                                accounts[i][2] = newBalance+"";
-                            }
+                    for (int i = 0; i < accounts.length; i++) {
+                        if(accounts[i][0].equals(accountNo)){
+                            accounts[i][2] = newBalance+"";
                         }
-
-                        System.out.print("Do you want to withdraw again (Y/n)?");
-                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
-                        else screen = DASHBOARD;
-                        break; 
                     }
 
-                    case ACCOUNT_BALANCE:{
-                        validateAccountNo("Enter Account No: ");
-                        if(!valid) continue;
+                    System.out.print("Do you want to withdraw again (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break; 
+                    }
+
+                case ACCOUNT_BALANCE:{
+                    validateAccountNo("Enter Account No: ");
+                    if(!valid) continue;
     
-                        for (int i = 0; i < accounts.length; i++) {
-                            if(accounts[i][0].equals(accountNo)){
-                                amount = accounts[i][2];
-                                accountName = accounts[i][1];
-                                System.out.printf("%sName:%s %s\n", COLOR_GREEN, RESET, accountName);
-                                System.out.printf("%sCurrent Account Balance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(amount));
-                                System.out.printf("%sAvailable Balance to withdraw:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ",Double.valueOf(amount)-500);
-                                break;
-                            }
+                    for (int i = 0; i < accounts.length; i++) {
+                        if(accounts[i][0].equals(accountNo)){
+                            amount = accounts[i][2];
+                            accountName = accounts[i][1];
+                            System.out.printf("%sName:%s %s\n", COLOR_GREEN, RESET, accountName);
+                            System.out.printf("%sCurrent Account Balance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(amount));
+                            System.out.printf("%sAvailable Balance to withdraw:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ",Double.valueOf(amount)-500);
+                            break;
                         }
+                    }
     
-                        System.out.println();
-                        System.out.print("Do you want to continue checking (Y/n)?");
-                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
-                        else screen = DASHBOARD;
-                        break; 
+                    System.out.println();
+                    System.out.print("Do you want to continue checking (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break; 
+    
+                }
+    
+                case DROP_ACCOUNT:{
+                    int index = 0;
+                    validateAccountNo("Enter Account No: ");
+                    if(!valid) continue;
+    
+                    for (int i = 0; i < accounts.length; i++) {
+                        if(accounts[i][0].equals(accountNo)){
+                            amount = accounts[i][2];
+                            accountName = accounts[i][1];
+                            accountID = accounts[i][0];
+                            index = i;
+                            System.out.printf("%sName:%s %s\n", COLOR_GREEN, RESET, accountName);
+                            System.out.printf("%sBalance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(amount));                                
+                            break;
+                        }
+                    }
+    
+                    System.out.println();
+                    System.out.print("Are you sure, you want to delete (Y/n)?");
+                    if(!SCANNER.nextLine().toUpperCase().strip().equals("Y")){
+                        screen = DASHBOARD;
+                        continue mainLoop;
     
                     }
     
-
+    
+                    String[][] newAccounts = new String[accounts.length -1][3];
+                    for (int i = 0; i < accounts.length; i++) {
+                        if (i < index)newAccounts[i] = accounts[i];    
+                        else if(i == index)continue;                           
+                        else newAccounts[i-1] = accounts[i];                                                  
+                    }
+    
+                    accounts = newAccounts;
+    
+                    System.out.printf(SUCCESS_MSG, String.format("%s:%s has been deleted successfully \n", accountID, accountName));
+                    System.out.print("Do you want to continue deleting (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break; 
+    
+                }
 
                 default:
                     System.exit(0);                   
