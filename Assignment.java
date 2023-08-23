@@ -152,6 +152,9 @@ public class Assignment {
                         // acoount number validation
                         validateAccountNo("Enter Account No: ");
                         if(!valid) continue;
+
+                        // Finding current balance
+                        checkCurrentBalance();
                     }
                     
                 default:
@@ -210,6 +213,17 @@ public class Assignment {
             
 
         }while(!valid);                   
+    }
+
+    public static void checkCurrentBalance(){
+        for (int i = 0; i < accounts.length; i++) {
+            if(accounts[i][0].equals(accountNo)){
+                amount = accounts[i][2];
+                accountName = accounts[i][1];
+                System.out.printf("%sCurrent Balance:%s %s%,.2f\n", COLOR_GREEN, RESET, "Rs. ",Double.valueOf(amount));
+                break;
+            }
+        }
     }
 
 
