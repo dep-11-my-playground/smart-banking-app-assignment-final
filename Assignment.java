@@ -155,8 +155,63 @@ public class Assignment {
 
                         // Finding current balance
                         checkCurrentBalance();
+
+                        // Deposit amount validation
+                    Double depositAmount;
+                    depositValidation:
+                    do{
+                        valid = true;
+                        System.out.print("Deposit Amount: ");
+                        depositAmount = SCANNER.nextDouble();
+                        SCANNER.nextLine();
+                        
+                        if(depositAmount < 500){
+                            System.out.printf(ERROR_MSG, "Insufficient Amount!");
+                            valid = false;  
+                            //continue;                       
+                        }
+
+                        if(valid == false){
+                            System.out.print(TRY_AGAIN_MSG);
+                            if(SCANNER.nextLine().strip().toUpperCase().equals("Y")){
+                                continue depositValidation;
+                            
+                            }else {
+                                screen = DASHBOARD;
+                                continue mainLoop;
+                            }                            
+                        }    
+
+                    }while(!valid);
+
+                    Double newBalance = Double.valueOf(amount) + depositAmount;
+                    System.out.printf("New Balance: %,.2f\n", newBalance);
+
+                    for (int i = 0; i < accounts.length; i++) {
+                        if(accounts[i][0].equals(accountNo)){
+                            accounts[i][2] = newBalance+"";
+                        }
                     }
-                    
+
+                    System.out.print("Do you want to continue depositing (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break; 
+                    }
+           
+                    case WITHDRAW:{
+                        // Account Validation
+                        validateAccountNo("Enter Account No:");
+                        if(!valid) continue;
+
+                        // Cheking current balance
+                        checkCurrentBalance();
+
+                        // Withdraw amount validation                   
+                        validateWithdrawAmount("Withdraw Amount: ");
+                        if (!valid) continue;
+                    }
+
                 default:
                     System.exit(0);                   
             }
@@ -226,6 +281,37 @@ public class Assignment {
         }
     }
 
+    public static void validateWithdrawAmount(String input){
+        do{
+            valid = true;
+            System.out.print(input);
+            withdrawAmount = SCANNER.nextDouble();
+            SCANNER.nextLine();
+
+            if(withdrawAmount < 100){
+                System.out.printf(ERROR_MSG, "Insufficient Amount!");
+                valid = false;
+            }
+
+            if ((Double.valueOf(amount) - withdrawAmount) < 500){
+                System.out.printf(ERROR_MSG, "Invalid amount, There should be at least Rs. 500.00 after withdrawl!");
+                valid = false;
+            }
+
+            if(valid == false){
+                System.out.print(TRY_AGAIN_MSG);
+                if(SCANNER.nextLine().strip().toUpperCase().equals("Y")){
+                    continue;
+                            
+                }else {
+                    screen = DASHBOARD;
+                    return;
+                }                            
+            } 
+
+        }while(!valid);
+
+    }
 
 
 }
