@@ -352,6 +352,27 @@ public class Assignment {
                         } 
                       
                     }while(!valid);
+
+                    Double fromAccountNewBalance = Double.valueOf(fromAccountAmount) - (transferAmount *1.02);
+                    System.out.printf("%sNew From Account Balance:%s %,.2f\n", COLOR_GREEN, RESET, fromAccountNewBalance);
+
+                    Double toAccountNewBalance = Double.valueOf(toAccountAmount) + transferAmount;
+                    System.out.printf("%sNew To Account Balance:%s %,.2f\n", COLOR_GREEN, RESET, toAccountNewBalance);
+
+                    for (int i = 0; i < accounts.length; i++) {
+                        if(accounts[i][0].equals(fromAccountId)){
+                            accounts[i][2] = fromAccountNewBalance+"";                           
+                        }           
+                        
+                        if(accounts[i][0].equals(toAccountId)){
+                            accounts[i][2] = toAccountNewBalance +"";                           
+                        } 
+                    }
+
+                    System.out.print("Do you want to continue transfering (Y/n)?");
+                    if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                    else screen = DASHBOARD;
+                    break;           
                 }
 
 
