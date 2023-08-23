@@ -210,6 +210,20 @@ public class Assignment {
                         // Withdraw amount validation                   
                         validateWithdrawAmount("Withdraw Amount: ");
                         if (!valid) continue;
+
+                        Double newBalance = Double.valueOf(amount) - withdrawAmount;
+                        System.out.printf("%sNew Balance:%s %,.2f\n", COLOR_GREEN, RESET, newBalance);
+
+                        for (int i = 0; i < accounts.length; i++) {
+                            if(accounts[i][0].equals(accountNo)){
+                                accounts[i][2] = newBalance+"";
+                            }
+                        }
+
+                        System.out.print("Do you want to withdraw again (Y/n)?");
+                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                        else screen = DASHBOARD;
+                        break; 
                     }
 
                 default:
