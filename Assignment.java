@@ -226,6 +226,31 @@ public class Assignment {
                         break; 
                     }
 
+                    case ACCOUNT_BALANCE:{
+                        validateAccountNo("Enter Account No: ");
+                        if(!valid) continue;
+    
+                        for (int i = 0; i < accounts.length; i++) {
+                            if(accounts[i][0].equals(accountNo)){
+                                amount = accounts[i][2];
+                                accountName = accounts[i][1];
+                                System.out.printf("%sName:%s %s\n", COLOR_GREEN, RESET, accountName);
+                                System.out.printf("%sCurrent Account Balance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(amount));
+                                System.out.printf("%sAvailable Balance to withdraw:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ",Double.valueOf(amount)-500);
+                                break;
+                            }
+                        }
+    
+                        System.out.println();
+                        System.out.print("Do you want to continue checking (Y/n)?");
+                        if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
+                        else screen = DASHBOARD;
+                        break; 
+    
+                    }
+    
+
+
                 default:
                     System.exit(0);                   
             }
