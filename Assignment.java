@@ -270,18 +270,15 @@ public class Assignment {
                     System.out.print("Are you sure, you want to delete (Y/n)?");
                     if(!SCANNER.nextLine().toUpperCase().strip().equals("Y")){
                         screen = DASHBOARD;
-                        continue mainLoop;
-    
-                    }
-    
-    
+                        continue mainLoop;   
+                    }   
                     String[][] newAccounts = new String[accounts.length -1][3];
                     for (int i = 0; i < accounts.length; i++) {
                         if (i < index)newAccounts[i] = accounts[i];    
                         else if(i == index)continue;                           
                         else newAccounts[i-1] = accounts[i];                                                  
                     }
-    
+   
                     accounts = newAccounts;
     
                     System.out.printf(SUCCESS_MSG, String.format("%s:%s has been deleted successfully \n", accountID, accountName));
@@ -289,8 +286,74 @@ public class Assignment {
                     if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
                     else screen = DASHBOARD;
                     break; 
-    
                 }
+
+                case TRANSFER:{
+                    validateAccountNo("Enter from A/C No: ");
+                    if(!valid) continue;
+
+                    for (int i = 0; i < accounts.length; i++) {
+                       if(accounts[i][0].equals(accountNo)){
+                            fromAccountAmount = accounts[i][2];
+                            fromAccountName = accounts[i][1];
+                            fromAccountId = accounts[i][0];
+    
+                            System.out.printf("%sFrom A/C Name:%s %s\n", COLOR_GREEN, RESET, fromAccountName);
+                            System.out.printf("%sFrom A/C Balance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(fromAccountAmount));
+                            
+                            break;
+                        }  
+                    }
+                    System.out.println();
+
+                    validateAccountNo("Enter to A/C No: ");
+                    if(!valid) continue;
+
+                    for (int i = 0; i < accounts.length; i++) {
+                       if(accounts[i][0].equals(accountNo)){
+                            toAccountAmount = accounts[i][2];
+                            toAccountName = accounts[i][1];
+                            toAccountId = accounts[i][0];
+
+                            System.out.printf("%sTo A/C Name:%s %s\n", COLOR_GREEN, RESET, toAccountName);
+                            System.out.printf("%sTo A/C Balance:%s %s%,.2f\n", COLOR_GREEN, RESET,"Rs. ", Double.valueOf(toAccountAmount));
+                            
+                            break;
+                        }  
+                    }
+                    transferAmountValidation:
+                    do {
+                        valid = true;
+                        System.out.print("Enter amount: ");
+                        transferAmount = SCANNER.nextDouble();
+                        SCANNER.nextLine();
+
+                        if(transferAmount < 100){
+                            System.out.printf(ERROR_MSG, "Insufficient amount");
+                            valid = false;
+                            
+                        }
+
+                        if ((Double.valueOf(fromAccountAmount) - transferAmount) < 500){
+                            System.out.printf(ERROR_MSG, "Invalid amount, There should be at least Rs. 500.00 after transfers!");
+                            valid = false;
+                            
+                        }
+
+                        if(valid == false){
+                            System.out.print(TRY_AGAIN_MSG);
+                            if(SCANNER.nextLine().strip().toUpperCase().equals("Y")){
+                                continue transferAmountValidation;
+                                        
+                            }else {
+                                screen = DASHBOARD;
+                                continue mainLoop;
+                            }                            
+                        } 
+                      
+                    }while(!valid);
+                }
+
 
                 default:
                     System.exit(0);                   
