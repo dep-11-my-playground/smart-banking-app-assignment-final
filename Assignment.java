@@ -146,12 +146,70 @@ public class Assignment {
                         if(SCANNER.nextLine().toUpperCase().strip().equals("Y")) continue;
                         else screen = DASHBOARD;
                         break;  
-                    }             
+                    }
+                    
+                    case DEPOSIT:{
+                        // acoount number validation
+                        validateAccountNo("Enter Account No: ");
+                        if(!valid) continue;
+                    }
+                    
                 default:
                     System.exit(0);                   
             }
 
        }while(true);
+    }
+
+    public static void validateAccountNo(String input){
+        do{
+
+            valid = true;
+            System.out.print(input);
+            accountNo = SCANNER.nextLine().toUpperCase().strip();
+
+            if(accountNo.isBlank()){
+                System.out.printf(ERROR_MSG, "Account number can't be empty!");
+                valid = false;
+
+            }else if(!(accountNo.startsWith("SDB-") && accountNo.length() == 9)){
+                System.out.printf(ERROR_MSG, "Inavlid format!");
+                valid = false;
+                
+            }else{
+                String number = accountNo.substring(4);
+                for (int i = 0; i < number.length(); i++) {
+                    if(!Character.isDigit(number.charAt(i))){
+                        System.out.printf(ERROR_MSG, "Inavlid format!");
+                        valid = false;
+                        break;
+                    }
+                }
+
+                boolean exists = false;
+                for (int i = 0; i < accounts.length; i++) {
+                    if (accounts[i][0].equals(accountNo)){
+                        exists = true;
+                        break;
+                    }
+                }    
+                if (!exists){
+                    valid = false;
+                    System.out.printf(ERROR_MSG, "Account not found!");
+                }
+            } 
+
+            if(!valid){
+                System.out.print(TRY_AGAIN_MSG);
+                if(SCANNER.nextLine().strip().toUpperCase().equals("Y")){
+                    continue;     
+                }
+                screen = DASHBOARD;
+                return;
+            }
+            
+
+        }while(!valid);                   
     }
 
 
