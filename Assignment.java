@@ -12,12 +12,12 @@ public class Assignment {
         final static String RESET = "\033[0m";
 
         final static String DASHBOARD = "💰 Welcome to Smart Banking App";
-        final static String OPEN_ACCOUNT = "💵 Open New Account";   
-        final static String DEPOSIT = "Deposit Money";
+        final static String OPEN_ACCOUNT = "➕ Open New Account";   
+        final static String DEPOSIT = "💵 Deposit Money";
         final static String WITHDRAW = "Withdraw Money";
         final static String TRANSFER = "💸 Transfer Money";
         final static String ACCOUNT_BALANCE = "Check Acoount Balance";
-        final static String DROP_ACCOUNT = "Drop Existing Account";
+        final static String DROP_ACCOUNT = "❌ Drop Existing Account";
 
         final static String ERROR_MSG = String.format("%s%s%s\n", COLOR_RED_BOLD, "%s", RESET);
         final static String SUCCESS_MSG = String.format("%s%s%s\n", COLOR_GREEN_BOLD, "%s", RESET);
@@ -77,7 +77,6 @@ public class Assignment {
                         case 6: screen = DROP_ACCOUNT;break;
                         case 7: System.exit(0); break;
                         default: continue;
-
                     }
                     break;
                 
@@ -373,6 +372,7 @@ public class Assignment {
                     else screen = DASHBOARD;
                     break;           
                 }
+                
                 default:
                     System.exit(0);                   
             }
@@ -428,6 +428,7 @@ public class Assignment {
 
         }while(!valid);                   
     }
+
     public static void checkCurrentBalance(){
         for (int i = 0; i < accounts.length; i++) {
             if(accounts[i][0].equals(accountNo)){
@@ -466,7 +467,6 @@ public class Assignment {
                     return;
                 }                            
             } 
-
         }while(!valid);
 
     }
