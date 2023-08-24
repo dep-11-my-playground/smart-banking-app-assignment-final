@@ -289,6 +289,7 @@ public class Assignment {
                 }
 
                 case TRANSFER:{
+                    
                     validateAccountNo("Enter from A/C No: ");
                     if(!valid) continue;
 
@@ -330,14 +331,12 @@ public class Assignment {
 
                         if(transferAmount < 100){
                             System.out.printf(ERROR_MSG, "Insufficient amount");
-                            valid = false;
-                            
+                            valid = false;   
                         }
 
                         if ((Double.valueOf(fromAccountAmount) - transferAmount) < 500){
                             System.out.printf(ERROR_MSG, "Invalid amount, There should be at least Rs. 500.00 after transfers!");
-                            valid = false;
-                            
+                            valid = false;                       
                         }
 
                         if(valid == false){
@@ -374,8 +373,6 @@ public class Assignment {
                     else screen = DASHBOARD;
                     break;           
                 }
-
-
                 default:
                     System.exit(0);                   
             }
@@ -407,7 +404,6 @@ public class Assignment {
                         break;
                     }
                 }
-
                 boolean exists = false;
                 for (int i = 0; i < accounts.length; i++) {
                     if (accounts[i][0].equals(accountNo)){
@@ -428,12 +424,10 @@ public class Assignment {
                 }
                 screen = DASHBOARD;
                 return;
-            }
-            
+            }           
 
         }while(!valid);                   
     }
-
     public static void checkCurrentBalance(){
         for (int i = 0; i < accounts.length; i++) {
             if(accounts[i][0].equals(accountNo)){
